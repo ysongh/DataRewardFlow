@@ -28,4 +28,15 @@ async function test() {
   }
 }
 
-test();
+async function submitData(data) {
+  try {
+    const tx = await DataRewardFlowManager.submitData(data);
+    const receipt = await tx.wait();
+    
+    console.log(`Transaction successful with hash: ${receipt.hash}`);
+  } catch (error) {
+    console.error('Error sending transaction:', error);
+  }
+}
+
+submitData("Test");
