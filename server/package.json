@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "node index.js",
+    "agent": "node verifier.js",
+    "call": "node callContract.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
