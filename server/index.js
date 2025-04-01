@@ -35,6 +35,22 @@ app.get('/test', async (req, res) => {
     }
 });
 
+app.get('/createbucket', async (req, res) => {
+    try {
+        const client = new RecallClient({ walletClient });
+        const bucketManager = client.bucketManager();
+        const {
+        result: { bucket },
+        } = await bucketManager.create();
+        console.log("Bucket created:", bucket); 
+    
+        res.json({ bucket });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/', (req, res) => res.send('It Work'));
 
 app.use((err, req, res, next) => {
