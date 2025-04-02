@@ -40,7 +40,7 @@ app.get('/createbucket', async (req, res) => {
         const client = new RecallClient({ walletClient });
         const bucketManager = client.bucketManager();
         const {
-        result: { bucket },
+            result: { bucket },
         } = await bucketManager.create();
         console.log("Bucket created:", bucket); 
     
@@ -56,7 +56,7 @@ app.get('/addtobucket/:bucketaddress', async (req, res) => {
         const bucketaddress = req.params.bucketaddress;
         const client = new RecallClient({ walletClient });
         const bucketManager = client.bucketManager();
-        const key = "hello/world";
+        const key = "hello/world1";
         const content = new TextEncoder().encode("testing");
         const file = new File([content], "file.txt", {
           type: "text/plain",
@@ -66,6 +66,30 @@ app.get('/addtobucket/:bucketaddress', async (req, res) => {
         console.log("Object added at:", addMeta?.tx?.transactionHash);
     
         res.json({ transactionHash: addMeta?.tx?.transactionHash });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/query/:bucketaddress', async (req, res) => {
+    try {
+        const bucketaddress = req.params.bucketaddress;
+        const client = new RecallClient({ walletClient });
+        const bucketManager = client.bucketManager();
+        const prefix = "hello/";
+        const {
+          result: { objects },
+        } = await bucketManager.query(bucketaddress, { prefix });
+        console.log("Objects:", objects);
+
+        const serializedObjects = JSON.stringify(objects, (key, value) => 
+            typeof value === 'bigint' ? value.toString() : value
+        );
+
+        const parsedObjects = JSON.parse(serializedObjects);
+    
+        res.json({ parsedObjects });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: error.message });
