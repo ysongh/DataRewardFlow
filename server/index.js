@@ -51,6 +51,27 @@ app.get('/createbucket', async (req, res) => {
     }
 });
 
+app.get('/addtobucket/:bucketaddress', async (req, res) => {
+    try {
+        const bucketaddress = req.params.bucketaddress;
+        const client = new RecallClient({ walletClient });
+        const bucketManager = client.bucketManager();
+        const key = "hello/world";
+        const content = new TextEncoder().encode("testing");
+        const file = new File([content], "file.txt", {
+          type: "text/plain",
+        });
+         
+        const { meta: addMeta } = await bucketManager.add(bucketaddress, key, file);
+        console.log("Object added at:", addMeta?.tx?.transactionHash);
+    
+        res.json({ transactionHash: addMeta?.tx?.transactionHash });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/', (req, res) => res.send('It Work'));
 
 app.use((err, req, res, next) => {
