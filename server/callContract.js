@@ -41,7 +41,10 @@ async function submitData(data, bucketaddress) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const tx = await DataRewardFlowManager.submitData(data);
+    const result = await response.json();
+    console.log(result);
+
+    const tx = await DataRewardFlowManager.submitData(data, result.key);
     const receipt = await tx.wait();
     
     console.log(`Transaction successful with hash: ${receipt.hash}`);
