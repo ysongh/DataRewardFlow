@@ -28,8 +28,19 @@ async function test() {
   }
 }
 
-async function submitData(data) {
+async function submitData(data, bucketaddress) {
   try {
+    const response = await fetch(`http://localhost:4000/addtobucket/${bucketaddress}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data: data})
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const tx = await DataRewardFlowManager.submitData(data);
     const receipt = await tx.wait();
     
@@ -39,4 +50,4 @@ async function submitData(data) {
   }
 }
 
-submitData("Test");
+submitData("It works", "0xFf00000000000000000000000000000000016999");

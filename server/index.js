@@ -51,13 +51,14 @@ app.get('/createbucket', async (req, res) => {
     }
 });
 
-app.get('/addtobucket/:bucketaddress', async (req, res) => {
+app.post('/addtobucket/:bucketaddress', async (req, res) => {
     try {
+        const data = req.body.data;
         const bucketaddress = req.params.bucketaddress;
         const client = new RecallClient({ walletClient });
         const bucketManager = client.bucketManager();
         const key = "hello/world1";
-        const content = new TextEncoder().encode("testing");
+        const content = new TextEncoder().encode(data);
         const file = new File([content], "file.txt", {
           type: "text/plain",
         });
