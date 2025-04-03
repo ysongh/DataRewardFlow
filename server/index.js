@@ -96,6 +96,24 @@ app.get('/query/:bucketaddress', async (req, res) => {
     }
 });
 
+app.get('/getobject/:bucketaddress', async (req, res) => {
+    try {
+        const bucketaddress = req.params.bucketaddress;
+        const client = new RecallClient({ walletClient });
+        const bucketManager = client.bucketManager();
+
+        const key = "hello/world";
+        const { result: object } = await bucketManager.get(bucketaddress, key);
+        const contents = new TextDecoder().decode(object);
+        console.log("Contents:", contents);
+    
+        res.json({ contents });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/', (req, res) => res.send('It Work'));
 
 app.use((err, req, res, next) => {
