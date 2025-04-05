@@ -1,5 +1,6 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
+import DataCampaignsList from './pages/DataCampaignsList';
 import DataMarketplaceForm from './pages/DataMarketplaceForm';
 
 function App() {
@@ -8,11 +9,11 @@ function App() {
     <HashRouter>
        <Routes>
          <Route
-           path="/test"
-           element={<h1>Test</h1>} />
+           path="/create-marketplace"
+           element={<DataMarketplaceForm />} />
          <Route
            path="/"
-           element={<DataMarketplaceForm />} />
+           element={<DataCampaignsList />} />
        </Routes>
      </HashRouter>
   )
