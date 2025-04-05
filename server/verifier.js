@@ -17,9 +17,17 @@ const provider = new JsonRpcProvider(infuraUrl);
 const wallet = new ethers.Wallet(privateKey, provider);
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
-async function verifyOnChain(submissionId, isValid) {
+async function verifyOnChain(submissionId, isValid, bucketaddress, dataHash) {
   console.log(`[START] Processing submission ${submissionId} with value ${isValid}`);
   try {
+    const response = await fetch(`http://localhost:4000/getobject/${bucketaddress}/${dataHash}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const result = await response.json();
+    console.log(result);
+
     console.log(`Preparing to send transaction to contract at ${contractAddress}`);
     console.log(`Using wallet address: ${wallet.address}`);
     
@@ -50,7 +58,7 @@ function startEventListener() {
     console.log(`Converting submissionId ${submissionId} to number: ${submissionIdNumber}`);
     
     try {
-      verifyOnChain(submissionIdNumber, true);
+      verifyOnChain(submissionIdNumber, true, "0xFf00000000000000000000000000000000016999", dataHash);
       console.log("verifyOnChain function called successfully");
     } catch (error) {
       console.error("Error calling verifyOnChain function:", error);

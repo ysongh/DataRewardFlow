@@ -44,7 +44,7 @@ async function submitData(data, bucketaddress) {
     const result = await response.json();
     console.log(result);
 
-    const tx = await DataRewardFlowManager.submitData(data, result.key);
+    const tx = await DataRewardFlowManager.submitData(result.key.toString());
     const receipt = await tx.wait();
     
     console.log(`Transaction successful with hash: ${receipt.hash}`);

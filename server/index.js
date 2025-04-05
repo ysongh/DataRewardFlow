@@ -98,13 +98,13 @@ app.get('/query/:bucketaddress', async (req, res) => {
     }
 });
 
-app.get('/getobject/:bucketaddress', async (req, res) => {
+app.get('/getobject/:bucketaddress/:key', async (req, res) => {
     try {
         const bucketaddress = req.params.bucketaddress;
         const client = new RecallClient({ walletClient });
         const bucketManager = client.bucketManager();
 
-        const key = "hello/world";
+        const key = "hello/" + req.params.key;
         const { result: object } = await bucketManager.get(bucketaddress, key);
         const contents = new TextDecoder().decode(object);
         console.log("Contents:", contents);

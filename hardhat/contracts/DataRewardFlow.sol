@@ -8,7 +8,6 @@ contract DataRewardFlow {
     mapping(address => uint256) public tokenBalances;
     
     struct DataSubmission {
-        uint256 key;
         address contributor;
         string dataHash;
         bool isVerified;
@@ -41,10 +40,9 @@ contract DataRewardFlow {
         tokenBalances[owner] = 1000000 * 10**18;
     }
     
-    function submitData(string memory _dataHash, uint256 _key) external {
+    function submitData(string memory _dataHash) external {
         submissionCount++;
         submissions[submissionCount] = DataSubmission({
-            key: _key,
             contributor: msg.sender,
             dataHash: _dataHash,
             isVerified: false,
