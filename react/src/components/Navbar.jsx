@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { ETHContext } from '../ETHContext';
 
 const Navbar = () => {
+  const { walletAddress, connectWallet } = useContext(ETHContext);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -130,6 +134,13 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
+            <button
+              onClick={connectWallet}
+              className="cursor-pointer bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md transition-colors duration-200 ml-4 text-white"
+            >
+              {walletAddress ? walletAddress : 'Connect Wallet'}
+            </button>
             
             {/* Mobile menu button */}
             <div className="flex md:hidden ml-2">
