@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract DataRewardFlow {
     address public owner;
     address public verifier;
+    string public bucketaddress;
     
     mapping(address => uint256) public tokenBalances;
     
@@ -34,10 +35,11 @@ contract DataRewardFlow {
         _;
     }
     
-    constructor() {
+    constructor(string memory _bucketaddress) {
         owner = msg.sender;
         verifier = msg.sender;
         tokenBalances[owner] = 1000000 * 10**18;
+        bucketaddress = _bucketaddress;
     }
     
     function submitData(string memory _dataHash) external {
@@ -92,6 +94,10 @@ contract DataRewardFlow {
     
     function getBalance(address _user) external view returns (uint256) {
         return tokenBalances[_user];
+    }
+
+    function getBucketAddress() external view returns (string memory) {
+        return bucketaddress;
     }
 
     function withdrawTokens(uint256 _amount) external {

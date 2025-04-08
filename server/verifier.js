@@ -10,6 +10,7 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 const contractABI = [
   "event DataSubmitted(uint256 submissionId, address contributor, string dataHash)",
   "function verifyData(uint256 submissionId, bool isValid) external",
+  "function getBucketAddress() external view returns (string)",
   "function submissions(uint256) view returns (address contributor, string dataHash, bool isVerified, bool isRewarded, uint256 rewardAmount)"
 ];
 
@@ -17,9 +18,11 @@ const provider = new JsonRpcProvider(infuraUrl);
 const wallet = new ethers.Wallet(privateKey, provider);
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
-async function verifyOnChain(submissionId, isValid, bucketaddress, dataHash) {
+async function verifyOnChain(submissionId, isValid, dataHash) {
   console.log(`[START] Processing submission ${submissionId} with value ${isValid}`);
   try {
+    const bucketaddress = await contract.getBucketAddress();
+
     const response = await fetch(`http://localhost:4000/getobject/${bucketaddress}/${dataHash}`);
 
     if (!response.ok) {
@@ -58,7 +61,7 @@ function startEventListener() {
     console.log(`Converting submissionId ${submissionId} to number: ${submissionIdNumber}`);
     
     try {
-      verifyOnChain(submissionIdNumber, true, "0xFf00000000000000000000000000000000016999", dataHash);
+      verifyOnChain(submissionIdNumber, true, dataHash);
       console.log("verifyOnChain function called successfully");
     } catch (error) {
       console.error("Error calling verifyOnChain function:", error);
