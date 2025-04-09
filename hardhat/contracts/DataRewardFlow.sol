@@ -5,6 +5,7 @@ contract DataRewardFlow {
     address public owner;
     address public verifier;
     string public bucketaddress;
+    string public targetData;
     
     mapping(address => uint256) public tokenBalances;
     
@@ -35,11 +36,12 @@ contract DataRewardFlow {
         _;
     }
     
-    constructor(string memory _bucketaddress) {
+    constructor(string memory _bucketaddress, string memory _targetData) {
         owner = msg.sender;
         verifier = msg.sender;
         tokenBalances[owner] = 1000000 * 10**18;
         bucketaddress = _bucketaddress;
+        targetData = _targetData;
     }
     
     function submitData(string memory _dataHash) external {
@@ -98,6 +100,10 @@ contract DataRewardFlow {
 
     function getBucketAddress() external view returns (string memory) {
         return bucketaddress;
+    }
+
+    function getTargetData() external view returns (string memory) {
+        return targetData;
     }
 
     function withdrawTokens(uint256 _amount) external {

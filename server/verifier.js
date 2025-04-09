@@ -11,6 +11,7 @@ const contractABI = [
   "event DataSubmitted(uint256 submissionId, address contributor, string dataHash)",
   "function verifyData(uint256 submissionId, bool isValid) external",
   "function getBucketAddress() external view returns (string)",
+  "function getTargetData() external view returns (string)",
   "function submissions(uint256) view returns (address contributor, string dataHash, bool isVerified, bool isRewarded, uint256 rewardAmount)"
 ];
 
@@ -30,6 +31,9 @@ async function verifyOnChain(submissionId, isValid, dataHash) {
     }
     const result = await response.json();
     console.log(result);
+
+    const targetData = await contract.getTargetData();
+    console.log("Target Data: ", targetData);
 
     console.log(`Preparing to send transaction to contract at ${contractAddress}`);
     console.log(`Using wallet address: ${wallet.address}`);
