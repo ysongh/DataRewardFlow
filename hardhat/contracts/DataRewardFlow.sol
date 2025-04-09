@@ -6,6 +6,7 @@ contract DataRewardFlow {
     address public verifier;
     string public bucketaddress;
     string public targetData;
+    uint256 date;
     
     mapping(address => uint256) public tokenBalances;
     
@@ -40,6 +41,7 @@ contract DataRewardFlow {
         owner = msg.sender;
         verifier = msg.sender;
         tokenBalances[owner] = 1000000 * 10**18;
+        date = block.timestamp;
         bucketaddress = _bucketaddress;
         targetData = _targetData;
     }
