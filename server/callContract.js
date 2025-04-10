@@ -53,4 +53,4 @@ async function submitData(data, bucketaddress) {
   }
 }
 
-submitData("It works", "0xFf00000000000000000000000000000000016999");
+submitData("It works", "0xFF000000000000000000000000000000000048E4");
