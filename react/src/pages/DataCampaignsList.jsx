@@ -348,7 +348,7 @@ const DataCampaignsList = () => {
                     </button>
                     <button 
                       className="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      onClick={() => alert(`Participate in campaign ${campaign.id}`)}
+                      onClick={() => navigate('/data-submission/' + campaign.id)}
                     >
                       Participate
                     </button>
