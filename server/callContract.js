@@ -20,6 +20,11 @@ const DataRewardFlowABI = DataRewardFlowArtifact.abi;
 const DataRewardFlowAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const DataRewardFlowManager = new ethers.Contract(DataRewardFlowAddress, DataRewardFlowABI, wallet);
 
+const DataRewardFlowFactoryArtifact = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../hardhat/artifacts/contracts/DataRewardFlowFactory.sol/DataRewardFlowFactory.json'), 'utf8'));
+const DataRewardFlowFactoryABI = DataRewardFlowFactoryArtifact.abi;
+const DataRewardFlowFactoryAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const DataRewardFlowFactoryManager = new ethers.Contract(DataRewardFlowFactoryAddress, DataRewardFlowFactoryABI, wallet);
+
 async function test() {
   try {
     console.log(DataRewardFlowManager);
@@ -53,4 +58,16 @@ async function submitData(data, bucketaddress) {
   }
 }
 
-submitData("It works", "0xFF000000000000000000000000000000000048E4");
+async function createCampaign(bucketaddress, targetData, name, description) {
+  try {
+    const tx = await DataRewardFlowFactoryManager.createCampaign(bucketaddress, targetData, name, description);
+    const receipt = await tx.wait();
+    
+    console.log(`Transaction successful with hash: ${receipt.hash}`);
+  } catch (error) {
+    console.error('Error sending transaction:', error);
+  }
+}
+
+// submitData("It works", "0xFF000000000000000000000000000000000048E4");
+createCampaign("0xFF000000000000000000000000000000000048E4", "Water Level", "Water", "Test Water Level")

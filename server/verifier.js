@@ -5,19 +5,27 @@ dotenv.config();
 
 const privateKey = process.env.PRIVATE_KEY;
 const infuraUrl = process.env.INFURA_URL;
-const contractAddress = process.env.CONTRACT_ADDRESS;
+const factoryAddress = process.env.CONTRACT_ADDRESS;
 
-const contractABI = [
-  "event DataSubmitted(uint256 submissionId, address contributor, string dataHash)",
-  "function verifyData(uint256 submissionId, bool isValid) external",
-  "function getBucketAddress() external view returns (string)",
-  "function getTargetData() external view returns (string)",
-  "function submissions(uint256) view returns (address contributor, string dataHash, bool isVerified, bool isRewarded, uint256 rewardAmount)"
+// const campaignABI = [
+//   "event CampaignCreated(uint256 campaignId, address campaignAddress, string name)",
+//   "event DataSubmitted(uint256 submissionId, address contributor, string dataHash)",
+//   "function verifyData(uint256 submissionId, bool isValid) external",
+//   "function getBucketAddress() external view returns (string)",
+//   "function getTargetData() external view returns (string)",
+//   "function submissions(uint256) view returns (address contributor, string dataHash, bool isVerified, bool isRewarded, uint256 rewardAmount)"
+// ];
+
+const factoryABI = [
+  "event CampaignCreated(uint256 indexed campaignId, address indexed campaignAddress, string name)",
+  "event CampaignDeactivated(uint256 indexed campaignId, address indexed campaignAddress)",
+  "event CampaignReactivated(uint256 indexed campaignId, address indexed campaignAddress)",
+  "function getDeployedCampaigns() public view returns (address[])"
 ];
 
 const provider = new JsonRpcProvider(infuraUrl);
 const wallet = new ethers.Wallet(privateKey, provider);
-const contract = new ethers.Contract(contractAddress, contractABI, wallet);
+const factoryContract = new ethers.Contract(factoryAddress, factoryABI, wallet);
 
 async function verifyOnChain(submissionId, isValid, dataHash) {
   console.log(`[START] Processing submission ${submissionId} with value ${isValid}`);
@@ -56,20 +64,24 @@ async function verifyOnChain(submissionId, isValid, dataHash) {
 
 function startEventListener() {
   console.log("Starting verifier event listener...");
+
+  // contract.on("DataSubmitted", (submissionId, contributor, dataHash, event) => {
+  //   console.log(`New submission detected: ID=${submissionId}, Contributor=${contributor}, Hash=${dataHash}`);
+    
+  //   const submissionIdNumber = Number(submissionId);
+    
+  //   console.log(`Converting submissionId ${submissionId} to number: ${submissionIdNumber}`);
+    
+  //   try {
+  //     verifyOnChain(submissionIdNumber, true, dataHash);
+  //     console.log("verifyOnChain function called successfully");
+  //   } catch (error) {
+  //     console.error("Error calling verifyOnChain function:", error);
+  //   }
+  // });
   
-  contract.on("DataSubmitted", (submissionId, contributor, dataHash, event) => {
-    console.log(`New submission detected: ID=${submissionId}, Contributor=${contributor}, Hash=${dataHash}`);
-    
-    const submissionIdNumber = Number(submissionId);
-    
-    console.log(`Converting submissionId ${submissionId} to number: ${submissionIdNumber}`);
-    
-    try {
-      verifyOnChain(submissionIdNumber, true, dataHash);
-      console.log("verifyOnChain function called successfully");
-    } catch (error) {
-      console.error("Error calling verifyOnChain function:", error);
-    }
+  factoryContract.on("CampaignCreated", (campaignId, campaignAddress, name, event) => {
+    console.log(`New campaign detected: ID=${campaignId}, Campaign Address=${campaignAddress}, Name=${name}`);
   });
   
   console.log("Event listener registered successfully");
