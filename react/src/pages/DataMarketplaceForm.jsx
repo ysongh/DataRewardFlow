@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { ETHContext } from '../ETHContext';
+import { useContracts } from '../utils/useContracts';
 
 const DataMarketplaceForm = () => {
+  const { signer } = useContext(ETHContext);
+  const { createCampaign } = useContracts();
+
   const [formData, setFormData] = useState({
     campaignName: '',
     description: '',
@@ -14,7 +20,6 @@ const DataMarketplaceForm = () => {
     privacySettings: 'standard',
     tags: '',
   });
-
   const [preview, setPreview] = useState(false);
 
   const handleChange = (e) => {
@@ -25,10 +30,18 @@ const DataMarketplaceForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Campaign created:', formData);
-    // Here you would typically send the data to your backend
+    
+    await createCampaign(
+      signer,
+      "0xFF000000000000000000000000000000000048E4",
+      formData.requirements,
+      formData.campaignName,
+      formData.description
+    );
+
     alert('Data collection campaign created successfully!');
   };
 
