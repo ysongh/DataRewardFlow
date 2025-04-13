@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { ETHContext } from '../ETHContext';
+import { formatAddress } from '../utils/format';
 
 const Navbar = () => {
   const { walletAddress, connectWallet } = useContext(ETHContext);
@@ -139,7 +140,7 @@ const Navbar = () => {
               onClick={connectWallet}
               className="cursor-pointer bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md transition-colors duration-200 ml-4 text-white"
             >
-              {walletAddress ? walletAddress : 'Connect Wallet'}
+              {walletAddress ? formatAddress(walletAddress) : 'Connect Wallet'}
             </button>
             
             {/* Mobile menu button */}
