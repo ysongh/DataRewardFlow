@@ -9,6 +9,7 @@ import './DataRewardFlow.sol';
  */
 contract DataRewardFlowFactory {
     address public owner;
+    address public verifier;
     
     // Array to store all deployed campaign addresses
     address[] public deployedCampaigns;
@@ -35,8 +36,9 @@ contract DataRewardFlowFactory {
         _;
     }
     
-    constructor() {
+    constructor(address _verifier) {
         owner = msg.sender;
+        verifier = _verifier;
     }
     
     /**
@@ -53,7 +55,7 @@ contract DataRewardFlowFactory {
         string memory _name,
         string memory _description
     ) public returns (address) {
-        DataRewardFlow newCampaign = new DataRewardFlow(_bucketaddress, _targetData);
+        DataRewardFlow newCampaign = new DataRewardFlow(_bucketaddress, _targetData, verifier);
         
         address campaignAddress = address(newCampaign);
         deployedCampaigns.push(campaignAddress);

@@ -37,9 +37,9 @@ contract DataRewardFlow {
         _;
     }
     
-    constructor(string memory _bucketaddress, string memory _targetData) {
+    constructor(string memory _bucketaddress, string memory _targetData, address _verifier) {
         owner = msg.sender;
-        verifier = msg.sender;
+        verifier = _verifier;
         tokenBalances[owner] = 1000000 * 10**18;
         date = block.timestamp;
         bucketaddress = _bucketaddress;

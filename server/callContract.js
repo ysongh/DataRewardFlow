@@ -69,5 +69,5 @@ async function createCampaign(bucketaddress, targetData, name, description) {
   }
 }
 
-submitData("0xa16E02E87b7454126E5E10d957A927A7F5B5d2be", "It works", "0xFF000000000000000000000000000000000048E4");
-// createCampaign("0xFF000000000000000000000000000000000048E4", "Water Level", "Water", "Test Water Level")
+// submitData("0xa16E02E87b7454126E5E10d957A927A7F5B5d2be", "It works", "0xFF000000000000000000000000000000000048E4");
+createCampaign("0xFF000000000000000000000000000000000048E4", "Water Level", "Water", "Test Water Level");
