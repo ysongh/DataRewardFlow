@@ -164,7 +164,7 @@ const DataSubmission = () => {
               <p className="text-sm text-gray-500 mt-1">by {campaignData[0]}</p>
             </div>
             <div className="text-right">
-              <div className="text-xl font-bold text-indigo-600">₮ {campaign.reward}</div>
+              <div className="text-xl font-bold text-indigo-600">FIL {0.2}</div>
               <div className="text-sm text-gray-500">reward per submission</div>
             </div>
           </div>

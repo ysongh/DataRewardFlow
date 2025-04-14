@@ -137,11 +137,11 @@ const DataMarketplaceForm = () => {
                       onChange={handleChange}
                       required
                       min="1"
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       placeholder="0"
                     />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500">₮</span>
+                    <div className="absolute inset-y-0 left-0 ml-2 flex items-center pointer-events-none">
+                      <span className="text-gray-500">FIL</span>
                     </div>
                   </div>
                 </div>
@@ -163,8 +163,8 @@ const DataMarketplaceForm = () => {
                       className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       placeholder="0.00"
                     />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500">₮</span>
+                    <div className="absolute inset-y-0 left-0 ml-2 flex items-center pointer-events-none">
+                      <span className="text-gray-500">FIL</span>
                     </div>
                   </div>
                 </div>
