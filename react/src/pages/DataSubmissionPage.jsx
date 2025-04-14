@@ -7,7 +7,7 @@ import { useContracts } from '../utils/useContracts';
 const DataSubmission = () => {
   const { campaignid } = useParams();
   const { signer } = useContext(ETHContext);
-  const { getCampaignDetails } = useContracts();
+  const { getCampaignDetails, submitData } = useContracts();
 
   const campaign = {
     id: '1',
@@ -88,6 +88,8 @@ const DataSubmission = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    await submitData(signer, campaignData[0], submissionData, "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
     
     // Validate the submission
     const validationResult = checkSubmissionValidity(submissionData);

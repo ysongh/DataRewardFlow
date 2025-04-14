@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import DataRewardFlowFactory from "../artifacts/contracts/DataRewardFlowFactory.sol/DataRewardFlowFactory.json";
-
+import DataRewardFlow from  "../artifacts/contracts/DataRewardFlow.sol/DataRewardFlow.json";
 const CAMPAIGNSFACTORY_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 export const useContracts = () => {
@@ -31,9 +31,37 @@ export const useContracts = () => {
     return createTX;
   }
 
+  const submitData = async (signer, contractAddress, data, bucketaddress) => {
+    try {
+      const response = await fetch(`http://localhost:4000/addtobucket/${bucketaddress}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: data})
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      console.log(result);
+  
+      const DataRewardFlowManager = new ethers.Contract(contractAddress, DataRewardFlow.abi, signer);
+  
+      const tx = await DataRewardFlowManager.submitData(result.key.toString());
+      const receipt = await tx.wait();
+      
+      console.log(`Transaction successful with hash: ${receipt.hash}`);
+    } catch (error) {
+      console.error('Error sending transaction:', error);
+    }
+  }
+
   return {
     getActiveCampaigns,
     getCampaignDetails,
-    createCampaign
+    createCampaign,
+    submitData
   };
 }
