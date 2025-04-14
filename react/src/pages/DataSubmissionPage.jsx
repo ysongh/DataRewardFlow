@@ -7,7 +7,7 @@ import { useContracts } from '../utils/useContracts';
 const DataSubmission = () => {
   const { campaignid } = useParams();
   const { signer } = useContext(ETHContext);
-  const { getCampaignDetails, submitData } = useContracts();
+  const { getCampaignDetails, getTargetData, submitData } = useContracts();
 
   const campaign = {
     id: '1',
@@ -24,6 +24,7 @@ const DataSubmission = () => {
 
   const [campaignData, setCampaignData] = useState([]);
   const [submissionData, setSubmissionData] = useState('');
+  const [requirements, setRequirements] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [aiVerificationResult, setAiVerificationResult] = useState(null);
@@ -37,6 +38,15 @@ const DataSubmission = () => {
   const fetchCampaignDetails = async () => {
     const data = await getCampaignDetails(signer, campaignid + 1);
     setCampaignData(data);
+  }
+
+  useEffect(() => {
+    if (campaignData[0]) fetchTargetData();
+  }, [campaignData[0]])
+  
+  const fetchTargetData = async () => {
+    const data = await getTargetData(signer, campaignData[0]);
+    setRequirements(data);
   }
 
   const handleDataChange = (e) => {
@@ -165,19 +175,19 @@ const DataSubmission = () => {
           
           <div className="mt-4 pt-4 border-t border-gray-200">
             <h3 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h3>
-            <p className="text-sm text-gray-600">campaign.requirements</p>
+            <p className="text-sm text-gray-600">{requirements}</p>
           </div>
           
           <div className="mt-4">
             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-1">
               <div 
                 className="bg-indigo-600 h-2.5 rounded-full" 
-                style={{ width: `${(campaign.submissionsReceived / campaign.submissionsRequired) * 100}%` }}
+                style={{ width: `${(0 / 100) * 100}%` }}
               ></div>
             </div>
             <div className="flex justify-between text-xs text-gray-500">
-              <span>{campaign.submissionsReceived} submissions received</span>
-              <span>{campaign.submissionsRequired - campaign.submissionsReceived} more needed</span>
+              <span>0 submissions received</span>
+              <span>{100 - 0} more needed</span>
             </div>
           </div>
         </div>

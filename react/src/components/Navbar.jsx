@@ -56,10 +56,10 @@ const Navbar = () => {
           </div>
 
           {/* Token Balance */}
-          <div className="hidden md:flex items-center bg-indigo-800 px-3 py-1 rounded-md">
+          {/* <div className="hidden md:flex items-center bg-indigo-800 px-3 py-1 rounded-md">
             <span className="text-indigo-200 text-sm mr-1">Balance:</span>
             <span className="text-white font-medium">₮ 245.50</span>
-          </div>
+          </div> */}
           
           {/* Right side - Notification and Profile */}
           <div className="flex items-center">

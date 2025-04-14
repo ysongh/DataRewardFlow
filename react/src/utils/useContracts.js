@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
 import DataRewardFlowFactory from "../artifacts/contracts/DataRewardFlowFactory.sol/DataRewardFlowFactory.json";
 import DataRewardFlow from  "../artifacts/contracts/DataRewardFlow.sol/DataRewardFlow.json";
-const CAMPAIGNSFACTORY_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// const CAMPAIGNSFACTORY_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const CAMPAIGNSFACTORY_ADDRESS = "0x0e79dd711611bB54d70BFac1a5f8A3de62f8d015";
+
 
 export const useContracts = () => {
   const getDataRewardFlowFactoryContract = async (signer) => {
@@ -20,6 +22,13 @@ export const useContracts = () => {
     const contract = await getDataRewardFlowFactoryContract(signer);
     let campaign = await contract.getCampaignDetails(id);
     campaign = Array.from(campaign);
+    console.log(campaign);
+    return campaign;
+  }
+
+  const getTargetData = async (signer, contractAddress) => {
+    const DataRewardFlowManager = new ethers.Contract(contractAddress, DataRewardFlow.abi, signer);
+    let campaign = await DataRewardFlowManager.getTargetData();
     console.log(campaign);
     return campaign;
   }
@@ -61,6 +70,7 @@ export const useContracts = () => {
   return {
     getActiveCampaigns,
     getCampaignDetails,
+    getTargetData,
     createCampaign,
     submitData
   };
