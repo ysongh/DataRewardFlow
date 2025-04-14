@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { ETHContext } from '../ETHContext';
+import { useContracts } from '../utils/useContracts';
 
 const DataSubmission = () => {
+  const { campaignid } = useParams();
+  const { signer } = useContext(ETHContext);
+  const { getCampaignDetails } = useContracts();
+
   const campaign = {
     id: '1',
     campaignName: 'Conversational Text Dataset',
@@ -14,12 +22,22 @@ const DataSubmission = () => {
     submissionsReceived: 245
   };
 
+  const [campaignData, setCampaignData] = useState([]);
   const [submissionData, setSubmissionData] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [aiVerificationResult, setAiVerificationResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const minCharCount = 250; // Minimum character requirement
+
+  useEffect(() => {
+    if (signer) fetchCampaignDetails();
+  }, [signer])
+  
+  const fetchCampaignDetails = async () => {
+    const data = await getCampaignDetails(signer, campaignid + 1);
+    setCampaignData(data);
+  }
 
   const handleDataChange = (e) => {
     setSubmissionData(e.target.value);
@@ -130,8 +148,8 @@ const DataSubmission = () => {
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{campaign.campaignName}</h1>
-              <p className="text-sm text-gray-500 mt-1">by {campaign.creator}</p>
+              <h1 className="text-2xl font-bold text-gray-900">{campaignData[1]}</h1>
+              <p className="text-sm text-gray-500 mt-1">by {campaignData[0]}</p>
             </div>
             <div className="text-right">
               <div className="text-xl font-bold text-indigo-600">₮ {campaign.reward}</div>
@@ -140,12 +158,12 @@ const DataSubmission = () => {
           </div>
           
           <div className="mt-4">
-            <p className="text-gray-600">{campaign.description}</p>
+            <p className="text-gray-600">{campaignData[2]}</p>
           </div>
           
           <div className="mt-4 pt-4 border-t border-gray-200">
             <h3 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h3>
-            <p className="text-sm text-gray-600">{campaign.requirements}</p>
+            <p className="text-sm text-gray-600">campaign.requirements</p>
           </div>
           
           <div className="mt-4">

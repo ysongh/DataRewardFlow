@@ -19,6 +19,7 @@ export const useContracts = () => {
   const getCampaignDetails = async (signer, id) => {
     const contract = await getDataRewardFlowFactoryContract(signer);
     let campaign = await contract.getCampaignDetails(id);
+    campaign = Array.from(campaign);
     console.log(campaign);
     return campaign;
   }

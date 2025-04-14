@@ -265,14 +265,13 @@ const DataCampaignsList = () => {
 
         {/* Campaigns List */}
         <div className="space-y-4">
-          {sortedCampaigns.length > 0 ? (
-            sortedCampaigns.map((campaign, index) => (
-             <CampaignCard
-              key={index}
-              id={index}
-              signer={signer}
-              campaign={campaign}
-              getCampaignDetails={getCampaignDetails} />
+          {activeCampaignAddresses.length > 0 ? (
+            activeCampaignAddresses.map((campaign, index) => (
+              <CampaignCard
+                key={index}
+                id={index}
+                signer={signer}
+                getCampaignDetails={getCampaignDetails} />
             ))
           ) : (
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
